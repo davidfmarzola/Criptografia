@@ -6,8 +6,21 @@
 #define true 1
 #define false 0
 
+void OrdenarChaveLexicograficamente(char *chave){
+    int *indicesDaChaveOrdenados;
+    int k = 0;
+    for(int i = 0; i<strlen(chave)-1; i++){
+        for(int j = 1; j<strlen(chave)-1; j++){
+            if(chave[i]>chave[j]){
+                //pensar numa forma de armazenar o indíce no vetor
+            }
+        }
+        k++;
+    }
+}
+
 void criptografarMatriz(char matriz[100][100], char *chave){
-    
+    OrdenarChaveLexicograficamente(chave);
 }
 
 void ColocarRegistroNaMatriz(char *registro, char *chave){
@@ -33,7 +46,6 @@ int main()
     printf("Entre com a registro: ");
     fgets(registro, 100, stdin); 
     ColocarRegistroNaMatriz(registro, chave);
-
 
     return 0;
 }
