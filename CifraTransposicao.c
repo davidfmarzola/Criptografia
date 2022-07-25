@@ -7,15 +7,20 @@
 #define false 0
 
 void OrdenarChaveLexicograficamente(char *chave){
-    int *indicesDaChaveOrdenados;
+    char caracteresDaChaveOrdenados[16];
     int k = 0;
     for(int i = 0; i<strlen(chave)-1; i++){
-        for(int j = 1; j<strlen(chave)-1; j++){
+        for(int j = i+1; j<strlen(chave); j++){
+            if(chave[i] == '\0') i++;
+            if(chave[j] == '\0') j++;
             if(chave[i]>chave[j]){
-                //pensar numa forma de armazenar o indíce no vetor
+                caracteresDaChaveOrdenados[i] = chave[j];
+                printf("%c\n", caracteresDaChaveOrdenados[i]);
+                chave[i] = chave[j];
+                chave[j] = '\0';//menor caractere
             }
         }
-        k++;
+        //k++;
     }
 }
 
