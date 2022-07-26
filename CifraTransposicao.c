@@ -6,36 +6,58 @@
 #define true 1
 #define false 0
 
-void OrdenarChaveLexicograficamente(char *chave){
-    char caracteresDaChaveOrdenados[16];
-    int k = 0;
-    for(int i = 0; i<strlen(chave)-1; i++){
-        for(int j = i+1; j<strlen(chave); j++){
-            if(chave[i] == '\0') i++;
-            if(chave[j] == '\0') j++;
-            if(chave[i]>chave[j]){
-                caracteresDaChaveOrdenados[i] = chave[j];
-                printf("%c\n", caracteresDaChaveOrdenados[i]);
-                chave[i] = chave[j];
-                chave[j] = '\0';//menor caractere
+void RetornarIndiceChaveOrdenado(char *chaveOrdenada, char *chave){
+    int *indicesDaChaveOrdenados;
+
+    for (int j = 0, k = 0; j < strlen(chave); j++){
+        for (int i = 0; i < strlen(chave); i++){
+            if (chave[i] == chaveOrdenada[j]){
+                indicesDaChaveOrdenados[k] = i;
+                k++;
             }
         }
-        //k++;
+        j = k - 1;
     }
 }
 
-void criptografarMatriz(char matriz[100][100], char *chave){
+void swap(char *chaveAuxiliar, char *chave, int j, int i)
+{
+    char tmp = chaveAuxiliar[i];
+    chaveAuxiliar[i] = chave[j];
+    chaveAuxiliar[j] = tmp;
+}
+
+void OrdenarChaveLexicograficamente(char *chave){
+    char *chaveOrdenada = (char*)malloc(sizeof(char) * 15);
+    strcpy(chaveOrdenada, chave);//problema na hora de copiar
+
+    for (int i = 0; i < strlen(chave) - 1; i++){
+        for (int j = i + 1; j < strlen(chave); j++){
+            if (chaveOrdenada[i] > chave[j]){
+                swap(chaveOrdenada, chave, j, i);
+            }
+        }
+    }
+    RetornarIndiceChaveOrdenado(chaveOrdenada, chave);
+}
+
+void criptografarMatriz(char matriz[100][100], char *chave)
+{
     OrdenarChaveLexicograficamente(chave);
 }
 
-void ColocarRegistroNaMatriz(char *registro, char *chave){
+void ColocarRegistroNaMatriz(char *registro, char *chave)
+{
     int tamanhoRegistro = (int)strlen(registro);
     int tamanhoChaveNumColunas = (int)strlen(chave);
-    double c = (double) tamanhoRegistro / tamanhoChaveNumColunas;
-    char matriz[100][100]; int i = 0;
+    double c = (double)tamanhoRegistro / tamanhoChaveNumColunas;
+    char matriz[100][100];
+    int i = 0;
 
-    for (int linha = 0; linha < (int)ceil(c); linha++){
-        for (int coluna = 0; i < strlen(registro) && coluna < tamanhoChaveNumColunas; coluna++){
+    for (int linha = 0; linha < (int)ceil(c); linha++)
+    {
+        for (int coluna = 0; i < strlen(registro) && coluna < tamanhoChaveNumColunas; coluna++)
+        {
             matriz[linha][coluna] = registro[i++];
         }
     }
@@ -49,7 +71,7 @@ int main()
     printf("Entre com a chave: ");
     fgets(chave, 15, stdin); // lê até a quebra de linha ('\n')
     printf("Entre com a registro: ");
-    fgets(registro, 100, stdin); 
+    fgets(registro, 100, stdin);
     ColocarRegistroNaMatriz(registro, chave);
 
     return 0;

@@ -4,7 +4,7 @@ import java.util.Arrays;
 public class CifraTransposicao {
     static Scanner scan = new Scanner(System.in);
 
-    public static int[] ColocarCaractereChaveEmOrdemAlfabetica(String chave) {
+    public static int[] RetornarIndiceChaveOrdenado(String chave) {
         char[] vcChave = chave.toCharArray();
         char[] vcChaveOrdenada = chave.toCharArray();
         int[] indicesDaChaveOrdenados = new int[vcChave.length];
@@ -40,7 +40,7 @@ public class CifraTransposicao {
     }
 
     public static char[][] CriptografarRegistro(char[][] matrizComRegistro, String chave) {
-        int[] viPosicaoOrdenada = ColocarCaractereChaveEmOrdemAlfabetica(chave);
+        int[] viPosicaoOrdenada = RetornarIndiceChaveOrdenado(chave);
         char[][] matriz = new char[matrizComRegistro.length][viPosicaoOrdenada.length];
 
         for (int j = 0; j < viPosicaoOrdenada.length; j++) { // coluna
@@ -52,7 +52,7 @@ public class CifraTransposicao {
     }
 
     public static char[][] DescriptografarRegistro(char[][] matrizCriptografada, String chave) {
-        int[] viPosicaoOrdenada = ColocarCaractereChaveEmOrdemAlfabetica(chave);
+        int[] viPosicaoOrdenada = RetornarIndiceChaveOrdenado(chave);
         char[][] matrizDescriptografada = new char[matrizCriptografada.length][viPosicaoOrdenada.length];
 
         for (int j = 0; j < viPosicaoOrdenada.length; j++) { // coluna
