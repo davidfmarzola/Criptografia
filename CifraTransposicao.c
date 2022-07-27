@@ -6,67 +6,55 @@
 #define true 1
 #define false 0
 
-void RetornarIndiceChaveOrdenado(char *chaveOrdenada, char *chave){
-    int *indicesDaChaveOrdenados;
-
-    for (int j = 0, k = 0; j < strlen(chave); j++){
-        for (int i = 0; i < strlen(chave); i++){
-            if (chave[i] == chaveOrdenada[j]){
-                indicesDaChaveOrdenados[k] = i;
-                k++;
-            }
-        }
-        j = k - 1;
-    }
+void RetornarIndiceChaveOrdenado(int indiceChaveOrdenado[15], int i, int j){
+    indiceChaveOrdenado[i] = j;
+    indiceChaveOrdenado[j] = i;
 }
 
-void swap(char *chaveAuxiliar, char *chave, int j, int i)
+void swap(char chaveOrdenada[15], char chave[15], int j, int i)
 {
-    char tmp = chaveAuxiliar[i];
-    chaveAuxiliar[i] = chave[j];
-    chaveAuxiliar[j] = tmp;
+    char tmp = chaveOrdenada[i];
+    chaveOrdenada[i] = chave[j];
+    chaveOrdenada[j] = tmp;
 }
 
-void OrdenarChaveLexicograficamente(char *chave){
-    char *chaveOrdenada = (char*)malloc(sizeof(char) * 15);
-    strcpy(chaveOrdenada, chave);//problema na hora de copiar
+void OrdenarChaveLexicograficamente(char chave[15]){
+    //"chave" e "chaveOrdenada" devem ter o mesmo conteúdo inicialmente
+    //mas é necessário que tenham endereço de memória distintos
+    char chaveOrdenada[15];
+    int indiceChaveOrdenado[15];
 
-    for (int i = 0; i < strlen(chave) - 1; i++){
-        for (int j = i + 1; j < strlen(chave); j++){
+    for (int i = 0; i < (int) strlen(chave) - 1; i++){
+        for (int j = i + 1; j < (int) strlen(chave); j++){
             if (chaveOrdenada[i] > chave[j]){
-                swap(chaveOrdenada, chave, j, i);
+                RetornarIndiceChaveOrdenado(indiceChaveOrdenado, i, j);
+                swap(chaveOrdenada, chave, j, i);  
             }
         }
     }
-    RetornarIndiceChaveOrdenado(chaveOrdenada, chave);
 }
 
-void criptografarMatriz(char matriz[100][100], char *chave)
-{
+void criptografarMatriz(char matriz[100][100], char chave[15]){
     OrdenarChaveLexicograficamente(chave);
 }
 
-void ColocarRegistroNaMatriz(char *registro, char *chave)
-{
+void ColocarRegistroNaMatriz(char *registro, char chave[15]){
     int tamanhoRegistro = (int)strlen(registro);
     int tamanhoChaveNumColunas = (int)strlen(chave);
     double c = (double)tamanhoRegistro / tamanhoChaveNumColunas;
     char matriz[100][100];
     int i = 0;
 
-    for (int linha = 0; linha < (int)ceil(c); linha++)
-    {
-        for (int coluna = 0; i < strlen(registro) && coluna < tamanhoChaveNumColunas; coluna++)
-        {
+    for (int linha = 0; linha < (int)ceil(c); linha++){
+        for (int coluna = 0; i < strlen(registro) && coluna < tamanhoChaveNumColunas; coluna++){
             matriz[linha][coluna] = registro[i++];
         }
     }
     criptografarMatriz(matriz, chave);
 }
 
-int main()
-{
-    char *chave = (char *)malloc(sizeof(char) * 15); // aloco 15 espaços na memória
+int main(){
+    char chave[15]; // aloco 15 espaços na memória
     char *registro = (char *)malloc(sizeof(char) * 100);
     printf("Entre com a chave: ");
     fgets(chave, 15, stdin); // lê até a quebra de linha ('\n')
