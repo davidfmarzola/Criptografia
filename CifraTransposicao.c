@@ -11,34 +11,34 @@ void RetornarIndiceChaveOrdenado(int indiceChaveOrdenado[15], int i, int j){
     indiceChaveOrdenado[j] = i;
 }
 
-void swap(char chaveOrdenada[15], char chave[15], int j, int i)
-{
+void swap(char chaveOrdenada[15], char chave[15], int j, int i){
     char tmp = chaveOrdenada[i];
     chaveOrdenada[i] = chave[j];
     chaveOrdenada[j] = tmp;
 }
 
-void OrdenarChaveLexicograficamente(char chave[15]){
-    //"chave" e "chaveOrdenada" devem ter o mesmo conteúdo inicialmente
-    //mas é necessário que tenham endereço de memória distintos
-    char chaveOrdenada[15];
-    int indiceChaveOrdenado[15];
+int *OrdenarChaveLexicograficamente(char chave[15]){
+    char *chaveOrdenada = (char*)malloc(sizeof(char)*15);
+    strcpy(chaveOrdenada, chave);
+    int tamanhoChave = (int) strlen(chave)-1;//ao remover o '\0'
+    int *indiceChaveOrdenado = (int*)malloc(sizeof(int)*tamanhoChave);
 
-    for (int i = 0; i < (int) strlen(chave) - 1; i++){
-        for (int j = i + 1; j < (int) strlen(chave); j++){
+    for (int i = 0; i < tamanhoChave - 1; i++){
+        for (int j = i + 1; j < tamanhoChave; j++){
             if (chaveOrdenada[i] > chave[j]){
                 RetornarIndiceChaveOrdenado(indiceChaveOrdenado, i, j);
                 swap(chaveOrdenada, chave, j, i);  
             }
         }
     }
+    return indiceChaveOrdenado;
 }
 
 void criptografarMatriz(char matriz[100][100], char chave[15]){
-    OrdenarChaveLexicograficamente(chave);
+    int *indiceChaveOrdenado = OrdenarChaveLexicograficamente(chave);
 }
 
-void ColocarRegistroNaMatriz(char *registro, char chave[15]){
+void ColocarRegistroNaMatriz(char *registro, char chave[15]) {
     int tamanhoRegistro = (int)strlen(registro);
     int tamanhoChaveNumColunas = (int)strlen(chave);
     double c = (double)tamanhoRegistro / tamanhoChaveNumColunas;
