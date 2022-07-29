@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#define boolean short
-#define true 1
-#define false 0
 
 void RetornarIndiceChaveOrdenado(int indiceChaveOrdenado[15], int i, int j){
     indiceChaveOrdenado[i] = j;
@@ -34,31 +31,57 @@ int *OrdenarChaveLexicograficamente(char chave[15]){
     return indiceChaveOrdenado;
 }
 
-void criptografarMatriz(char matrizComRegistro[100][100], char chave[15], int numeroLinhas) {
+void **descriptografarMatriz(char **matrizCriptografada, char chave[15], double c){
+    int numeroLinhas = (int)ceil(c);
     int *indiceChaveOrdenado = OrdenarChaveLexicograficamente(chave);
     int numeroColunas = (int) strlen(chave) - 1;
-    char matriz[100][100];
+
+    char **matrizDescriptografada; 
+    matrizDescriptografada = malloc(numeroLinhas * sizeof(int));//alocando linhas
+    for(int k = 0; k < numeroLinhas; k++) {
+        matrizDescriptografada[k] = malloc(numeroColunas * sizeof(int));//alocando colunas para cada linha
+    }
 
     for(int j = 0; j < numeroColunas; j++) { //coluna
         for(int i = 0; i < numeroLinhas; i++){ // linha
-           matriz[i][j] = matrizComRegistro[i][indiceChaveOrdenado[j]];
+            if (matrizCriptografada[i][j] != '\0') {
+                matrizDescriptografada[i][indiceChaveOrdenado[j]] = matrizCriptografada[i][j];
+            }
         }
     }
 }
 
-void ColocarRegistroNaMatriz(char *registro, char chave[15]) {
+void **criptografarMatriz(char **matrizComRegistro, char chave[15], double c){
+    int numeroLinhas = (int)ceil(c);
+    int *indiceChaveOrdenado = OrdenarChaveLexicograficamente(chave);
+    int numeroColunas = (int) strlen(chave) - 1;
+
+    char **matriz; 
+    matriz = malloc(numeroLinhas * sizeof(int));//alocando linhas
+    for(int k = 0; k < numeroLinhas; k++) {
+        matriz[k] = malloc(numeroColunas * sizeof(int));//alocando colunas para cada linha
+    }
+    descriptografarMatriz(matriz, chave, c);
+}
+
+char **ColocarRegistroNaMatriz(char *registro, char chave[15]) {
     int tamanhoRegistro = (int)strlen(registro) - 1;
     int tamanhoChaveNumColunas = (int)strlen(chave) - 1;
     double c = (double)tamanhoRegistro / tamanhoChaveNumColunas;
-    char matriz[100][100]; 
-    int i = 0;
 
+    char **matriz; 
+    matriz = malloc((int)ceil(c) * sizeof(int));//alocando linhas
+    for(int k = 0; k<(int)ceil(c); k++) {
+        matriz[k] = malloc(tamanhoChaveNumColunas * sizeof(int));//alocando colunas para cada linha
+    }
+
+    int i = 0;
     for (int linha = 0; linha < (int)ceil(c); linha++){
         for (int coluna = 0; i < tamanhoRegistro && coluna < tamanhoChaveNumColunas; coluna++){
             matriz[linha][coluna] = registro[i++];
         }
     }
-    criptografarMatriz(matriz, chave, (int) ceil(c));
+   criptografarMatriz(matriz, chave, c);
 }
 
 int main(){
@@ -69,6 +92,5 @@ int main(){
     printf("Entre com a registro: ");
     fgets(registro, 100, stdin);
     ColocarRegistroNaMatriz(registro, chave);
-
     return 0;
 }

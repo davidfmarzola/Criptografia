@@ -45,7 +45,9 @@ public class CifraTransposicao {
 
         for (int j = 0; j < viPosicaoOrdenada.length; j++) { // coluna
             for (int i = 0; i < matrizComRegistro.length; i++) {// linha
-                matriz[i][j] = matrizComRegistro[i][viPosicaoOrdenada[j]];
+                if (matrizComRegistro[i][viPosicaoOrdenada[j]] != '\0') {
+                    matriz[i][j] = matrizComRegistro[i][viPosicaoOrdenada[j]];
+                }
             }
         }
         return matriz;
@@ -74,6 +76,5 @@ public class CifraTransposicao {
         char[][] matrizComRegistro = ColocarRegistroNaMatriz(registro, vcChave);
         char[][] matrizCriptografada = CriptografarRegistro(matrizComRegistro, chave);
         char[][] registroDescriptografado = DescriptografarRegistro(matrizCriptografada, chave);
-
     }
 }
