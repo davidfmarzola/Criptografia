@@ -34,23 +34,31 @@ int *OrdenarChaveLexicograficamente(char chave[15]){
     return indiceChaveOrdenado;
 }
 
-void criptografarMatriz(char matriz[100][100], char chave[15]){
+void criptografarMatriz(char matrizComRegistro[100][100], char chave[15], int numeroLinhas) {
     int *indiceChaveOrdenado = OrdenarChaveLexicograficamente(chave);
+    int numeroColunas = (int) strlen(chave) - 1;
+    char matriz[100][100];
+
+    for(int j = 0; j < numeroColunas; j++) { //coluna
+        for(int i = 0; i < numeroLinhas; i++){ // linha
+           matriz[i][j] = matrizComRegistro[i][indiceChaveOrdenado[j]];
+        }
+    }
 }
 
 void ColocarRegistroNaMatriz(char *registro, char chave[15]) {
-    int tamanhoRegistro = (int)strlen(registro);
-    int tamanhoChaveNumColunas = (int)strlen(chave);
+    int tamanhoRegistro = (int)strlen(registro) - 1;
+    int tamanhoChaveNumColunas = (int)strlen(chave) - 1;
     double c = (double)tamanhoRegistro / tamanhoChaveNumColunas;
-    char matriz[100][100];
+    char matriz[100][100]; 
     int i = 0;
 
     for (int linha = 0; linha < (int)ceil(c); linha++){
-        for (int coluna = 0; i < strlen(registro) && coluna < tamanhoChaveNumColunas; coluna++){
+        for (int coluna = 0; i < tamanhoRegistro && coluna < tamanhoChaveNumColunas; coluna++){
             matriz[linha][coluna] = registro[i++];
         }
     }
-    criptografarMatriz(matriz, chave);
+    criptografarMatriz(matriz, chave, (int) ceil(c));
 }
 
 int main(){
