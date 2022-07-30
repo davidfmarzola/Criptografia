@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 
 public class CifraTransposicao {
@@ -22,7 +24,7 @@ public class CifraTransposicao {
         return indicesDaChaveOrdenados;
     }
 
-    public static char[][] ColocarRegistroNaMatriz(String registro, char[] vcChave) {
+    public static char[][] AtribuirRegistroAMatriz(String registro, char[] vcChave) {
         int numDeLinhas = registro.length() / vcChave.length;
         if (registro.length() % vcChave.length > 0)
             numDeLinhas++;
@@ -66,6 +68,7 @@ public class CifraTransposicao {
     }
 
     public static void main(String[] args) {
+        long tempoInicial = System.currentTimeMillis();
 
         System.out.println("Entre com a chave");
         String chave = scan.nextLine();
@@ -73,8 +76,11 @@ public class CifraTransposicao {
         String registro = scan.nextLine();
 
         char[] vcChave = chave.toCharArray();
-        char[][] matrizComRegistro = ColocarRegistroNaMatriz(registro, vcChave);
+        char[][] matrizComRegistro = AtribuirRegistroAMatriz(registro, vcChave);
         char[][] matrizCriptografada = CriptografarRegistro(matrizComRegistro, chave);
         char[][] registroDescriptografado = DescriptografarRegistro(matrizCriptografada, chave);
+
+        System.out
+                .println("O método foi executado em " + (System.currentTimeMillis() - tempoInicial) + " ms.");
     }
 }
