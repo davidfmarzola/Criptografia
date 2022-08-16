@@ -1,9 +1,4 @@
-from ast import Continue, IsNot
-from asyncio.windows_events import NULL
-from genericpath import exists
 from math import ceil
-from multiprocessing.sharedctypes import Value
-from queue import Empty
 
 chave = input("Entre com a chave: ")
 registro = input("Entre com o registro: ")
