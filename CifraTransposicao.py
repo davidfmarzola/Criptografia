@@ -2,8 +2,8 @@ from math import ceil
 
 chave = input("Entre com a chave: ")
 registro = input("Entre com o registro: ")
-numDeLinhas = ceil(len(registro) / len(chave)) # 3
-numDeColunas = len(chave) # 4
+numDeLinhas = ceil(len(registro) / len(chave)) 
+numDeColunas = len(chave) 
 
 def AtribuirRegistroAMatriz(registro, chave):
     indRegistro = 0 
@@ -17,18 +17,28 @@ def AtribuirRegistroAMatriz(registro, chave):
         matriz.append(linha)
     return matriz
 
+def OrdenarIndiceChaveLexicograficamente(chave, chaveOrdenada):
+    indiceChaveOrdenada = []
+    for j in range(len(chave)):
+        k=0
+        for i in range(len(chave)):
+            if(chave[i] == chaveOrdenada[j]):
+                indiceChaveOrdenada.append(i)
+                k+=1
+        j=k-1
+    return indiceChaveOrdenada
+
 def CriptografarRegistro(matrizComRegistro, chave):
     chaveOrdenada = sorted(chave)
+    indiceChaveOrdenada = OrdenarIndiceChaveLexicograficamente(chave, chaveOrdenada)
     matrizCriptografada = []
     for j in range(numDeColunas):
-        linha = []
         for i in range(numDeLinhas):
-            if(matrizComRegistro[i][chaveOrdenada[j]]!= '\0'):
-                linha.append(matrizComRegistro[i][chaveOrdenada[j]])
-        matrizCriptografada.append(linha)
+            # IndexError: list index out of range
+            matrizCriptografada.append(matrizComRegistro[i][indiceChaveOrdenada[j]])
     return matrizCriptografada
 
 matrizComRegistro = AtribuirRegistroAMatriz(registro, chave)
-matrizCriptografada = CriptografarRegistro(matrizComRegistro, chave)
 print(matrizComRegistro)
+matrizCriptografada = CriptografarRegistro(matrizComRegistro, chave)
 print(matrizCriptografada)
