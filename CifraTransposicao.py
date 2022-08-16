@@ -1,9 +1,14 @@
+from ast import Continue, IsNot
+from asyncio.windows_events import NULL
+from genericpath import exists
 from math import ceil
+from multiprocessing.sharedctypes import Value
+from queue import Empty
 
 chave = input("Entre com a chave: ")
 registro = input("Entre com o registro: ")
 numDeLinhas = ceil(len(registro) / len(chave)) 
-numDeColunas = len(chave) 
+numDeColunas = len(chave)
 
 def AtribuirRegistroAMatriz(registro, chave):
     indRegistro = 0 
@@ -29,16 +34,37 @@ def OrdenarIndiceChaveLexicograficamente(chave, chaveOrdenada):
     return indiceChaveOrdenada
 
 def CriptografarRegistro(matrizComRegistro, chave):
-    chaveOrdenada = sorted(chave)
-    indiceChaveOrdenada = OrdenarIndiceChaveLexicograficamente(chave, chaveOrdenada)
-    matrizCriptografada = []
+    matriz = []
     for j in range(numDeColunas):
+        linha = []
         for i in range(numDeLinhas):
-            # IndexError: list index out of range
-            matrizCriptografada.append(matrizComRegistro[i][indiceChaveOrdenada[j]])
-    return matrizCriptografada
+            try:
+                linha.append(matrizComRegistro[i][indiceChaveOrdenada[j]])
+            except IndexError:
+                continue
+        matriz.append(linha)
+    return matriz
+
+def DescriptografarRegistro(matrizCriptografada, chave):
+    matriz = []
+    for j in range(numDeColunas):
+        linha = []
+        for i in range(numDeLinhas):
+            try:
+                print(f'matrizCriptografada[{i}][{j}] = ', matrizCriptografada[i][j])
+            except IndexError:
+                print(f'matrizCriptografada[{i}][{j}] = ')
+                continue
+    return matriz
+
 
 matrizComRegistro = AtribuirRegistroAMatriz(registro, chave)
-print(matrizComRegistro)
-matrizCriptografada = CriptografarRegistro(matrizComRegistro, chave)
+# print(matrizComRegistro)
+
+chaveOrdenada = sorted(chave)
+indiceChaveOrdenada = OrdenarIndiceChaveLexicograficamente(chave, chaveOrdenada)
+matrizCriptografada = CriptografarRegistro(matrizComRegistro, indiceChaveOrdenada)
 print(matrizCriptografada)
+
+matrizDescriptografada = DescriptografarRegistro(matrizCriptografada, chave)
+# print(matrizDescriptografada)
