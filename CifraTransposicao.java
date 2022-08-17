@@ -1,6 +1,4 @@
 import java.util.Scanner;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Arrays;
 
 public class CifraTransposicao {
@@ -81,6 +79,7 @@ public class CifraTransposicao {
         char[][] registroDescriptografado = DescriptografarRegistro(matrizCriptografada, chave);
 
         System.out
-                .println("O método foi executado em " + (System.currentTimeMillis() - tempoInicial) + " ms.");
+                .println("O método foi executado em " + ((System.currentTimeMillis() - tempoInicial)
+                        + " milissegundos");
     }
 }

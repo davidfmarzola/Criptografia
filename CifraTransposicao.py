@@ -1,5 +1,6 @@
 from math import ceil
-
+import time
+tempo_inicial = (time.time())
 chave = input("Entre com a chave: ")
 registro = input("Entre com o registro: ")
 numDeLinhas = ceil(len(registro) / len(chave)) 
@@ -40,26 +41,33 @@ def CriptografarRegistro(matrizComRegistro, chave):
         matriz.append(linha)
     return matriz
 
+def matriz_nula():
+    m = []
+    for i in range(numDeLinhas):
+        linha=[0]*numDeColunas
+        if i == numDeLinhas-1:
+            nposicoesembranco=(numDeLinhas*numDeColunas)-len(registro)
+            nposicoesultimalinha=numDeColunas-nposicoesembranco
+            linha=[0]*(nposicoesultimalinha)
+        m.append(linha)
+    return m
+
 def DescriptografarRegistro(matrizCriptografada, chave):
-    matriz = []
+    matriz = matriz_nula()
     for j in range(numDeColunas):
-        linha = []
         for i in range(numDeLinhas):
             try:
-                print(f'matrizCriptografada[{i}][{j}] = ', matrizCriptografada[i][j])
+                matriz[i][indiceChaveOrdenada[j]] = matrizCriptografada[j][i]
             except IndexError:
-                print(f'matrizCriptografada[{i}][{j}] = ')
                 continue
     return matriz
 
-
 matrizComRegistro = AtribuirRegistroAMatriz(registro, chave)
-# print(matrizComRegistro)
 
 chaveOrdenada = sorted(chave)
 indiceChaveOrdenada = OrdenarIndiceChaveLexicograficamente(chave, chaveOrdenada)
 matrizCriptografada = CriptografarRegistro(matrizComRegistro, indiceChaveOrdenada)
-print(matrizCriptografada)
 
 matrizDescriptografada = DescriptografarRegistro(matrizCriptografada, chave)
-# print(matrizDescriptografada)
+tempo_final=(time.time())
+print(f'Execution time: {(tempo_final - tempo_inicial)*1000} milissegundos')
